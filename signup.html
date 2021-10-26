@@ -1,61 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ToDo</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ToDo</title>
+		<!-- ---------------- estilos compartidos de login y signup ---------------- -->
+		<link rel="stylesheet" href="styles/ingreso.css" />
 
-  <!-- ---------------- estilos compartidos de login y signup ---------------- -->
-  <link rel="stylesheet" href="styles/ingreso.css">
-
-  <!-- ---------------------- logica aplicada en register -------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="/scripts/signup.js"></script>
-
-</head>
-
-<body>
-
-  <div class="left">
-    <img src="./assets/persona-signup.png" alt="">
-  </div>
-  <div class="right">
-    <form>
-      <div class="form-header">
-        <p>To-Do App</p>
-      </div>
-
-      <label>
-        Nombre:
-        <input type="text">
-      </label>
-      <label>
-        Apellido:
-        <input type="text">
-      </label>
-      <label>
-        Email:
-        <input type="text">
-      </label>
-      <label>
-        Contraseña:
-        <input type="password">
-      </label>
-      <label>
-        Repetir contraseña:
-        <input type="password">
-      </label>
-
-      <button>Crear Cuenta</button>
-
-    </form>
-    <div class="ingresarA">
-      <a href="index.html">¿Ya tiene una cuenta? Ingrese aquí</a>
-    </div>
-  </div>
-
-</body>
-
+		<!-- ---------------------- logica aplicada en register -------------------- -->
+		<script src="/scripts/utils.js"></script>
+		<script src="./scripts/sigup.js"></script>
+	</head>
+	<body>
+		<div class="left">
+			<img src="./assets/persona-signup.png" alt="" />
+		</div>
+		<div class="right">
+			<form>
+				<div class="form-header">
+					<p>To-Do App</p>
+				</div>
+				<h4 class="oculto" id="mensajeError">
+					Este usuario ya se encuentra registrado.
+				</h4>
+				<label for="nombre">
+					Nombre:
+					<input type="text" name="nombre" id="nombre" />
+					<small id="vacioNombre" class="oculto">
+						Este campo es obligatorio.
+					</small>
+				</label>
+				<label for="apellido">
+					Apellido:
+					<input type="text" name="apellido" id="apellido" />
+					<small id="vacioApellido" class="oculto">
+						Este campo es obligatorio.
+					</small>
+				</label>
+				<label for="email">
+					Email:
+					<input type="text" name="email" id="email" />
+					<small id="vacioEmail" class="oculto">
+						Este campo es obligatorio.
+					</small>
+				</label>
+				<label for="pass">
+					Contraseña:
+					<input type="password" name="pass" id="pass" />
+					<small id="vacioPass" class="oculto">
+						Este campo es obligatorio.
+					</small>
+				</label>
+				<label for="rePass">
+					Repetir contraseña:
+					<input type="password" name="rePass" id="rePass" />
+					<small id="vacioRePass" class="oculto">
+						Este campo es obligatorio.
+					</small>
+					<small id="passIguales" class="oculto">
+						Las contraseñas deben ser iguales.
+					</small>
+				</label>
+				<button type="submit">Crear Cuenta</button>
+			</form>
+			<div class="ingresarA">
+				<a href="index.html">¿Ya tiene una cuenta? Ingrese aquí</a>
+			</div>
+		</div>
+	</body>
 </html>
