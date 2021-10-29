@@ -11,8 +11,7 @@ window.addEventListener('load', () => {
 	/* -------------------------------------------------------------------------- */
 
 	obtenerNombreUsuario(`${urlApi}/users/getMe`, jwt);
-	obtenerlistaTareas(`${urlApi}/tasks`, jwt);
-
+	obtenerTareas(`${urlApi}/tasks`, jwt);
 	formulario.addEventListener('submit', function (evento) {
 		evento.preventDefault();
 		const nuevaTareaInfo = {
@@ -30,6 +29,7 @@ window.addEventListener('load', () => {
 			localStorage.removeItem('token');
 		}
 	});
+
 	/* -------------------------------- Funciones ------------------------------- */
 	function obtenerNombreUsuario(url, token) {
 		const settings = {
@@ -44,7 +44,7 @@ window.addEventListener('load', () => {
 				pUserInfo.innerHTML = data.firstName + ' ' + data.lastName;
 			});
 	}
-	function obtenerlistaTareas(url, token) {
+	function obtenerTareas(url, token) {
 		const settings = {
 			method: 'GET',
 			headers: {
@@ -70,9 +70,14 @@ window.addEventListener('load', () => {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
+				obtenerTareas(`${urlApi}/tasks`, jwt);
 			});
 	}
 	function renderizarInfo(listado) {
+		if (listado.length > 0) {
+			tareasPendientes.innerHTML = '';
+		}
+		tareasTerminadas.innerHTML = '';
 		listado.forEach((tarea) => {
 			if (tarea.completed) {
 				tareasTerminadas.innerHTML += `<li class="tarea">
@@ -97,6 +102,60 @@ window.addEventListener('load', () => {
 				</li>`;
 			}
 		});
+		const botonesTerminar = document.querySelectorAll('.not-done.change');
+		botonesTerminar.forEach((boton) => {
+			boton.addEventListener('click', function () {
+				datos = {
+					completed: true,
+				};
+				modificarTarea(`${urlApi}/tasks/${boton.id}`, jwt, datos);
+			});
+		});
+		const botonesPendiente = document.querySelectorAll('button i.change');
+		botonesPendiente.forEach((boton) => {
+			boton.addEventListener('click', function () {
+				datos = {
+					completed: false,
+				};
+				modificarTarea(`${urlApi}/tasks/${boton.id}`, jwt, datos);
+			});
+		});
+		const botonesBorar = document.querySelectorAll('button i.fa-trash-alt');
+		botonesBorar.forEach((boton) => {
+			boton.addEventListener('click', function () {
+				borrarTarea(`${urlApi}/tasks/${boton.id}`, jwt);
+			});
+		});
+	}
+	function modificarTarea(url, token, payload) {
+		const settings = {
+			method: 'PUT',
+			headers: {
+				'Content-type': 'application/json',
+				authorization: token,
+			},
+			body: JSON.stringify(payload),
+		};
+		fetch(url, settings)
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				obtenerTareas(`${urlApi}/tasks`, jwt);
+			});
+	}
+	function borrarTarea(url, token) {
+		const settings = {
+			method: 'DELETE',
+			headers: {
+				authorization: token,
+			},
+		};
+		fetch(url, settings)
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				obtenerTareas(`${urlApi}/tasks`, jwt);
+			});
 	}
 	/* -------------------------------------------------------------------------- */
 });
