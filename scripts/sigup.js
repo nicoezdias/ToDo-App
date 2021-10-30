@@ -113,7 +113,7 @@ function fetchApiSingup(urlApi, nuevosDatos) {
 			if (json.jwt) {
 				// redirijo a la vista correspondiente
 				mensajeError.classList.add('oculto');
-				location.href = './index.html';
+				location.href = 'index.html';
 			} else {
 				mensajeError.classList.remove('oculto');
 			}
