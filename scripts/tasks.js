@@ -25,7 +25,7 @@ window.addEventListener('load', () => {
 	cerrarSesion.addEventListener('click', function () {
 		const respuesta = confirm('¿Desea cerrar sesión?');
 		if (respuesta) {
-			location.href = './index.html';
+			location.href = 'index.html';
 			localStorage.removeItem('token');
 		}
 	});

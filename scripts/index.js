@@ -57,7 +57,7 @@ function fetchApiLogin(urlApi, nuevosDatos) {
 				localStorage.setItem('token', data.jwt);
 				mensajeError.classList.add('oculto');
 				// redirijo a la vista correspondiente
-				location.href = '/mis-tareas.html';
+				location.href = 'mis-tareas.html';
 			} else {
 				mensajeError.classList.remove('oculto');
 			}
