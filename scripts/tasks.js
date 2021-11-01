@@ -102,52 +102,39 @@ window.addEventListener('load', () => {
 				</li>`;
 			}
 		});
-		const botonesTerminar = document.querySelectorAll('.not-done.change');
-		Completar(botonesTerminar);
-		const botonesPendiente = document.querySelectorAll('button i.change');
-		pasarAPendientes(botonesPendiente);
+		modificarTarea(`${urlApi}/tasks`, jwt);
+		borrarTarea(`${urlApi}/tasks`, jwt);
+	}
+	function modificarTarea(url, token) {
+		const botonesTerminar = document.querySelectorAll('.change');
+		botonesTerminar.forEach((boton) => {
+			boton.addEventListener('click', function (event) {
+				const payload = {};
+				if (event.target.classList.contains('fa-undo-alt')) {
+					payload.completed = false;
+				} else {
+					payload.completed = true;
+				}
+				const settings = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						authorization: token,
+					},
+					body: JSON.stringify(payload),
+				};
+				fetch(`${url}/${boton.id}`, settings)
+					.then((response) => response.json())
+					.then((data) => {
+						console.log(data);
+						obtenerTareas(url, jwt);
+					});
+			});
+		});
+	}
+	function borrarTarea(url, token) {
 		const botonesBorar = document.querySelectorAll('button i.fa-trash-alt');
-
-		borrarTarea(`${urlApi}/tasks`, jwt, botonesBorar);
-	}
-	function Completar(botones) {
-		botones.forEach((boton) => {
-			boton.addEventListener('click', function () {
-				datos = {
-					completed: true,
-				};
-				modificarTarea(`${urlApi}/tasks/${boton.id}`, jwt, datos);
-			});
-		});
-	}
-	function pasarAPendientes(botones) {
-		botones.forEach((boton) => {
-			boton.addEventListener('click', function () {
-				datos = {
-					completed: false,
-				};
-				modificarTarea(`${urlApi}/tasks/${boton.id}`, jwt, datos);
-			});
-		});
-	}
-	function modificarTarea(url, token, payload) {
-		const settings = {
-			method: 'PUT',
-			headers: {
-				'Content-type': 'application/json',
-				authorization: token,
-			},
-			body: JSON.stringify(payload),
-		};
-		fetch(url, settings)
-			.then((response) => response.json())
-			.then((data) => {
-				console.log(data);
-				obtenerTareas(`${urlApi}/tasks`, jwt);
-			});
-	}
-	function borrarTarea(url, token, botones) {
-		botones.forEach((boton) => {
+		botonesBorar.forEach((boton) => {
 			boton.addEventListener('click', function () {
 				const settings = {
 					method: 'DELETE',
@@ -159,7 +146,7 @@ window.addEventListener('load', () => {
 					.then((response) => response.json())
 					.then((data) => {
 						console.log(data);
-						obtenerTareas(`${urlApi}/tasks`, jwt);
+						obtenerTareas(url, jwt);
 					});
 			});
 		});
