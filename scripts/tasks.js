@@ -103,7 +103,15 @@ window.addEventListener('load', () => {
 			}
 		});
 		const botonesTerminar = document.querySelectorAll('.not-done.change');
-		botonesTerminar.forEach((boton) => {
+		Completar(botonesTerminar);
+		const botonesPendiente = document.querySelectorAll('button i.change');
+		pasarAPendientes(botonesPendiente);
+		const botonesBorar = document.querySelectorAll('button i.fa-trash-alt');
+
+		borrarTarea(`${urlApi}/tasks`, jwt, botonesBorar);
+	}
+	function Completar(botones) {
+		botones.forEach((boton) => {
 			boton.addEventListener('click', function () {
 				datos = {
 					completed: true,
@@ -111,19 +119,14 @@ window.addEventListener('load', () => {
 				modificarTarea(`${urlApi}/tasks/${boton.id}`, jwt, datos);
 			});
 		});
-		const botonesPendiente = document.querySelectorAll('button i.change');
-		botonesPendiente.forEach((boton) => {
+	}
+	function pasarAPendientes(botones) {
+		botones.forEach((boton) => {
 			boton.addEventListener('click', function () {
 				datos = {
 					completed: false,
 				};
 				modificarTarea(`${urlApi}/tasks/${boton.id}`, jwt, datos);
-			});
-		});
-		const botonesBorar = document.querySelectorAll('button i.fa-trash-alt');
-		botonesBorar.forEach((boton) => {
-			boton.addEventListener('click', function () {
-				borrarTarea(`${urlApi}/tasks/${boton.id}`, jwt);
 			});
 		});
 	}
@@ -143,19 +146,23 @@ window.addEventListener('load', () => {
 				obtenerTareas(`${urlApi}/tasks`, jwt);
 			});
 	}
-	function borrarTarea(url, token) {
-		const settings = {
-			method: 'DELETE',
-			headers: {
-				authorization: token,
-			},
-		};
-		fetch(url, settings)
-			.then((response) => response.json())
-			.then((data) => {
-				console.log(data);
-				obtenerTareas(`${urlApi}/tasks`, jwt);
+	function borrarTarea(url, token, botones) {
+		botones.forEach((boton) => {
+			boton.addEventListener('click', function () {
+				const settings = {
+					method: 'DELETE',
+					headers: {
+						authorization: token,
+					},
+				};
+				fetch(`${url}/${boton.id}`, settings)
+					.then((response) => response.json())
+					.then((data) => {
+						console.log(data);
+						obtenerTareas(`${urlApi}/tasks`, jwt);
+					});
 			});
+		});
 	}
 	/* -------------------------------------------------------------------------- */
 });

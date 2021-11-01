@@ -1,3 +1,7 @@
+const usuarioLoggeado = localStorage.getItem('token');
+if (usuarioLoggeado) {
+	location.replace('mis-tareas.html');
+}
 const urlApi = 'https://ctd-todo-api.herokuapp.com/v1/users/login';
 window.addEventListener('load', function () {
 	const formulario = this.document.forms[0];
